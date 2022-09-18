@@ -1,0 +1,5 @@
+FRAMES_PER_SEC = 60
+SCREEN_WIDTH = 512
+SCREEN_HEIGHT = 768
+GAME_NAME = "Aircraft Battle v.1.0"
+ICON_PATH = "res/app.ico"
