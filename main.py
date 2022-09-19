@@ -1,5 +1,6 @@
 from config import *
 from Background import *
+from Plane import *
 
 pygame.init()
 
@@ -14,6 +15,9 @@ pygame.display.set_caption(GAME_NAME)
 # set pygame clock
 clock = pygame.time.Clock()
 
+# set player
+player = Player(PLAYER_IMG_PATH, PLAYER_SPEED)
+
 # set game background
 background = Background(GAME_BG_PATH, GAME_BG_SPEED, window)
 
@@ -22,6 +26,8 @@ running = True
 while running:
     clock.tick(FRAMES_PER_SEC)
     background.display()
+    player.move()
+    player.display(window)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
