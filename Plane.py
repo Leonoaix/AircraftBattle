@@ -18,8 +18,7 @@ class Player(Plane):
         self.rect.x = SCREEN_WIDTH/3
         self.rect.y = SCREEN_HEIGHT*2/3
 
-    def move(self):
-        pressed_key = pygame.key.get_pressed()
+    def move(self, pressed_key):
         if pressed_key[pygame.K_LEFT] and self.rect.x - self.speed >= 0:
             self.rect.x -= self.speed
         if pressed_key[pygame.K_RIGHT] and self.rect.x + self.image.get_width() + self.speed <= SCREEN_WIDTH:

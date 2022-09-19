@@ -1,3 +1,5 @@
+import pygame.key
+
 from config import *
 from Background import *
 from Plane import *
@@ -25,8 +27,9 @@ background = Background(GAME_BG_PATH, GAME_BG_SPEED, window)
 running = True
 while running:
     clock.tick(FRAMES_PER_SEC)
+    pressed_key = pygame.key.get_pressed()
     background.display()
-    player.move()
+    player.move(pressed_key)
     player.display(window)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
