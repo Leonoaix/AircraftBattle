@@ -1,8 +1,6 @@
-import pygame.key
-
 from config import *
 from Background import *
-from Plane import *
+from ShootingSystem import *
 
 pygame.init()
 
@@ -23,6 +21,12 @@ player = Player(PLAYER_IMG_PATH, PLAYER_SPEED)
 # set game background
 background = Background(GAME_BG_PATH, GAME_BG_SPEED, window)
 
+# set a cartridge for player
+bullets = [Bullet(PLAYER_BULLET_IMG_PATH, PLAYER_BULLET_SPEED) for _ in range(BULLET_CARTRIDGE)]
+
+# set player's shooting system
+player_shoot = Shooting(bullets, PLAYER_BULLET_INTERVAL, player, window)
+
 # set the running loop
 running = True
 while running:
@@ -31,6 +35,7 @@ while running:
     background.display()
     player.move(pressed_key)
     player.display(window)
+    player_shoot.emit()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False

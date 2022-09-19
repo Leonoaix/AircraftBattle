@@ -1,6 +1,7 @@
 import pygame
 
 
+# The idea behind scrolling is to alternate between two images
 class Background:
     def __init__(self, image, speed, window):
         self.image1 = pygame.image.load(image)
@@ -11,6 +12,7 @@ class Background:
         self.rect2 = self.image2.get_rect()
         self.rect2.y -= self.rect1.height
 
+    # display the background, can set static or scrolling mode
     def display(self, is_scroll=True):
         if is_scroll:
             self.rect1.y += self.speed
