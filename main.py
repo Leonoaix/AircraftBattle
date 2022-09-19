@@ -1,5 +1,5 @@
-import pygame
 from config import *
+from Background import *
 
 pygame.init()
 
@@ -14,12 +14,17 @@ pygame.display.set_caption(GAME_NAME)
 # set pygame clock
 clock = pygame.time.Clock()
 
+# set game background
+background = Background(GAME_BG_PATH, GAME_BG_SPEED, window)
+
 # set the running loop
 running = True
 while running:
+    clock.tick(FRAMES_PER_SEC)
+    background.display()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    clock.tick(FRAMES_PER_SEC)
+    pygame.display.update()
 
 
