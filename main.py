@@ -24,6 +24,10 @@ background = Background(GAME_BG_PATH, GAME_BG_SPEED, window)
 # set a cartridge for player
 bullets = [Bullet(PLAYER_BULLET_IMG_PATH, PLAYER_BULLET_SPEED) for _ in range(BULLET_CARTRIDGE)]
 
+# set enemies
+enemies = [Enemy(ENEMY_IMG_PATH, ENEMY_SPEED) for _ in range(MAX_ENEMY)]
+enemy_sys = EnemySystem(enemies, window, ENEMY_INTERVAL)
+
 # set player's shooting system
 player_shoot = Shooting(bullets, PLAYER_BULLET_INTERVAL, player, window)
 
@@ -35,6 +39,7 @@ while running:
     background.display()
     player.move(pressed_key)
     player.display(window)
+    enemy_sys.start_system()
     player_shoot.emit()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

@@ -12,13 +12,17 @@ class Bullet:
         # get rectangle area for bullet
         self.rect = self.image.get_rect()
 
+    # shoot on a line
+    def update_position(self):
+        if not self.isFree:
+            self.rect.y -= self.speed
+            if self.rect.y < 0:
+                self.isFree = True
 
-# shoot on a line
-def update_position(bullet: Bullet):
-    if not bullet.isFree:
-        bullet.rect.y -= bullet.speed
-        if bullet.rect.y < 0:
-            bullet.isFree = True
+    # if bullet is on the window, display it
+    def display(self, screen: pygame.Surface):
+        if not self.isFree:
+            screen.blit(self.image, self.rect)
 
 
 class Shooting:
@@ -38,19 +42,14 @@ class Shooting:
                 bullet.isFree = False
                 break
 
-    # if bullet is on the window, display it
-    def __display(self, bullet: Bullet):
-        if not bullet.isFree:
-            self.screen.blit(bullet.image, bullet.rect)
-
     # shoot bullet in every interval time, and update every bullet on the window
     def emit(self):
         if self.__cnt == self.intervals:
             self.__init_bullet()
             self.__cnt = 0
         for bullet in self.bullets:
-            self.__display(bullet)
-            update_position(bullet)
+            bullet.display(self.screen)
+            bullet.update_position()
         self.__cnt += 1
 
 

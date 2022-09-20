@@ -1,5 +1,6 @@
 import pygame
 from config import SCREEN_WIDTH, SCREEN_HEIGHT
+import random
 
 
 class Plane:
@@ -31,4 +32,44 @@ class Player(Plane):
             self.rect.y -= self.speed
         if pressed_key[pygame.K_DOWN] and self.rect.y + self.speed + self.image.get_height() <= SCREEN_HEIGHT:
             self.rect.y += self.speed
+
+
+class Enemy(Plane):
+    def __init__(self, img_path, speed):
+        Plane.__init__(self, img_path)
+        self.isFree = True
+        self.speed = speed
+
+    def moving(self):
+        if not self.isFree:
+            self.rect.y += self.speed
+            if self.rect.y > SCREEN_HEIGHT:
+                self.isFree = True
+
+
+class EnemySystem:
+    def __init__(self, enemies: list[Enemy], screen, interval):
+        self.enemies = enemies
+        self.screen = screen
+        self.interval = interval
+        self.cnt = 0
+
+    def __init_enemy(self):
+        for enemy in self.enemies:
+            if enemy.isFree:
+                enemy.rect.x = random.randint(0, SCREEN_WIDTH - enemy.rect.width)
+                print(enemy.rect.x)
+                enemy.rect.y = 0
+                enemy.isFree = False
+                break
+
+    def start_system(self):
+        if self.cnt == self.interval:
+            self.__init_enemy()
+            self.cnt = 0
+        for enemy in self.enemies:
+            if not enemy.isFree:
+                enemy.display(self.screen)
+            enemy.moving()
+        self.cnt += 1
 
