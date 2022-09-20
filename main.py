@@ -47,6 +47,7 @@ while running:
     player_shoot.emit()
     for enemy in enemies:
         if not enemy.isFree:
+            running = Collision_Detector.enemy_player(enemy, player)
             for bullet in bullets:
                 if not bullet.isFree:
                     Collision_Detector.enemy_bullet(enemy, bullet, bombs)

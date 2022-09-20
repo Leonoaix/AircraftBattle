@@ -1,4 +1,4 @@
-from ShootingSystem import Enemy, Bullet, pygame
+from ShootingSystem import Enemy, Bullet, pygame, Player
 
 
 class Bomb:
@@ -37,3 +37,9 @@ def enemy_bullet(enemy: Enemy, bullet: Bullet, bombs: list[Bomb]):
                 bomb.y = enemy.rect.y
                 bomb.isFree = False
                 break
+
+
+def enemy_player(enemy: Enemy, player: Player):
+    if enemy.rect.colliderect(player.rect):
+        return False
+    return True
