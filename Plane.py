@@ -58,7 +58,6 @@ class EnemySystem:
         for enemy in self.enemies:
             if enemy.isFree:
                 enemy.rect.x = random.randint(0, SCREEN_WIDTH - enemy.rect.width)
-                print(enemy.rect.x)
                 enemy.rect.y = 0
                 enemy.isFree = False
                 break

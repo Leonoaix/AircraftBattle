@@ -1,6 +1,7 @@
 from config import *
 from Background import *
 from ShootingSystem import *
+import Collision_Detector
 
 pygame.init()
 
@@ -28,6 +29,9 @@ bullets = [Bullet(PLAYER_BULLET_IMG_PATH, PLAYER_BULLET_SPEED) for _ in range(BU
 enemies = [Enemy(ENEMY_IMG_PATH, ENEMY_SPEED) for _ in range(MAX_ENEMY)]
 enemy_sys = EnemySystem(enemies, window, ENEMY_INTERVAL)
 
+# set bombs
+bombs = [Collision_Detector.Bomb(BOMB_IMG_PATHS, BOMB_INTERVAL, window) for _ in range(MAX_BOMB)]
+
 # set player's shooting system
 player_shoot = Shooting(bullets, PLAYER_BULLET_INTERVAL, player, window)
 
@@ -41,9 +45,15 @@ while running:
     player.display(window)
     enemy_sys.start_system()
     player_shoot.emit()
+    for enemy in enemies:
+        if not enemy.isFree:
+            for bullet in bullets:
+                if not bullet.isFree:
+                    Collision_Detector.enemy_bullet(enemy, bullet, bombs)
+    for bomb in bombs:
+        bomb.update_info()
+        bomb.show()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
     pygame.display.update()
-
-
