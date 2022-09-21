@@ -9,6 +9,8 @@ ICON_PATH = "res/app.ico"
 GAME_BG_PATH = "res/img_bg_level_1.jpg"
 GAME_BG_SPEED = 1
 
+BGM_PATH = "res/bg.wav"
+
 PLAYER_IMG_PATH = "res/hero2.png"
 PLAYER_SPEED = 2
 

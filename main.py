@@ -22,6 +22,10 @@ player = Player(PLAYER_IMG_PATH, PLAYER_SPEED)
 # set game background
 background = Background(GAME_BG_PATH, GAME_BG_SPEED, window)
 
+# set BGM
+pygame.mixer.music.load(BGM_PATH)
+pygame.mixer.music.play()
+
 # set a cartridge for player
 bullets = [Bullet(PLAYER_BULLET_IMG_PATH, PLAYER_BULLET_SPEED) for _ in range(BULLET_CARTRIDGE)]
 
@@ -48,6 +52,10 @@ while running:
     for enemy in enemies:
         if not enemy.isFree:
             running = Collision_Detector.enemy_player(enemy, player)
+            # If you do not add these two lines,
+            # Player will check with the other Enemy and change the value of running again
+            if not running:
+                break
             for bullet in bullets:
                 if not bullet.isFree:
                     Collision_Detector.enemy_bullet(enemy, bullet, bombs)
