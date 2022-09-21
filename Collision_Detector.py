@@ -1,4 +1,9 @@
 from ShootingSystem import Enemy, Bullet, pygame, Player
+from config import BOMB_SOUND_PATH, BOMB_VOLUME
+
+pygame.mixer.init()
+bomb_sound = pygame.mixer.Sound(BOMB_SOUND_PATH)
+bomb_sound.set_volume(BOMB_VOLUME)
 
 
 class Bomb:
@@ -36,6 +41,7 @@ def enemy_bullet(enemy: Enemy, bullet: Bullet, bombs: list[Bomb]):
                 bomb.x = enemy.rect.x
                 bomb.y = enemy.rect.y
                 bomb.isFree = False
+                bomb_sound.play()
                 break
 
 

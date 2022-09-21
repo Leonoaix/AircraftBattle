@@ -24,7 +24,8 @@ background = Background(GAME_BG_PATH, GAME_BG_SPEED, window)
 
 # set BGM
 pygame.mixer.music.load(BGM_PATH)
-pygame.mixer.music.play()
+pygame.mixer.music.set_volume(BGM_VOLUME)
+pygame.mixer.music.play(-1)
 
 # set a cartridge for player
 bullets = [Bullet(PLAYER_BULLET_IMG_PATH, PLAYER_BULLET_SPEED) for _ in range(BULLET_CARTRIDGE)]
@@ -34,10 +35,11 @@ enemies = [Enemy(ENEMY_IMG_PATH, ENEMY_SPEED) for _ in range(MAX_ENEMY)]
 enemy_sys = EnemySystem(enemies, window, ENEMY_INTERVAL)
 
 # set bombs
-bombs = [Collision_Detector.Bomb(BOMB_IMG_PATHS, BOMB_INTERVAL, window) for _ in range(MAX_BOMB)]
+bombs = [Collision_Detector.Bomb(BOMB_IMG_PATHS, BOMB_INTERVAL, window)
+         for _ in range(MAX_BOMB)]
 
 # set player's shooting system
-player_shoot = Shooting(bullets, PLAYER_BULLET_INTERVAL, player, window)
+player_shoot = Shooting(bullets, PLAYER_BULLET_INTERVAL, player, window, SHOOT_KEY)
 
 # set the running loop
 running = True
@@ -48,7 +50,7 @@ while running:
     player.move(pressed_key)
     player.display(window)
     enemy_sys.start_system()
-    player_shoot.emit()
+    player_shoot.manually_launch(pressed_key)
     for enemy in enemies:
         if not enemy.isFree:
             running = Collision_Detector.enemy_player(enemy, player)

@@ -14,24 +14,25 @@ class Bullet:
 
     # shoot on a line
     def update_position(self):
-        if not self.isFree:
-            self.rect.y -= self.speed
-            if self.rect.y < 0:
-                self.isFree = True
+        self.rect.y -= self.speed
+        if self.rect.y < 0:
+            self.isFree = True
 
     # if bullet is on the window, display it
-    def display(self, screen: pygame.Surface):
+    def move(self, screen: pygame.Surface):
         if not self.isFree:
             screen.blit(self.image, self.rect)
+            self.update_position()
 
 
 class Shooting:
-    def __init__(self, bullets: list[Bullet], intervals, shooter: Plane, screen: pygame.Surface):
+    def __init__(self, bullets: list[Bullet], intervals, shooter: Plane, screen: pygame.Surface, shoot_key):
         self.bullets = bullets
         self.intervals = intervals
         self.shooter = shooter
         self.screen = screen
         self.__cnt = 0
+        self.shoot_key = shoot_key
 
     # find an available bullet and initialize it
     def __init_bullet(self):
@@ -43,13 +44,26 @@ class Shooting:
                 break
 
     # shoot bullet in every interval time, and update every bullet on the window
-    def emit(self):
+    def auto_emit(self):
         if self.__cnt == self.intervals:
             self.__init_bullet()
             self.__cnt = 0
         for bullet in self.bullets:
-            bullet.display(self.screen)
-            bullet.update_position()
+            bullet.move(self.screen)
         self.__cnt += 1
+
+    # player can shoot bullet by clicking or pressing keys
+    def manually_launch(self, pressed_keys):
+        if pressed_keys[self.shoot_key]:
+            if self.__cnt == self.intervals:
+                self.__init_bullet()
+                self.__cnt = 0
+            self.__cnt += 1
+        else:
+            self.__cnt = self.intervals
+        for bullet in self.bullets:
+            bullet.move(self.screen)
+
+
 
 
