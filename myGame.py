@@ -1,6 +1,5 @@
-from config import *
 from Background import *
-from ShootingSystem import *
+from Plane import *
 import Collision_Detector
 
 
@@ -18,9 +17,6 @@ def aircraft_battle():
     # set pygame clock
     clock = pygame.time.Clock()
 
-    # set player
-    player = Player(PLAYER_IMG_PATH, PLAYER_SPEED)
-
     # set game background
     background = Background(GAME_BG_PATH, GAME_BG_SPEED, window)
 
@@ -30,19 +26,18 @@ def aircraft_battle():
     pygame.mixer.music.set_volume(BGM_VOLUME)
     pygame.mixer.music.play(-1)
 
-    # set a cartridge for player
-    bullets = [Bullet(PLAYER_BULLET_IMG_PATH, PLAYER_BULLET_SPEED) for _ in range(BULLET_CARTRIDGE)]
+    # set player
+    player = Player(window, PLAYER_IMG_PATH, PLAYER_SPEED, PLAYER_BULLET_IMG_PATH, PLAYER_BULLET_SPEED,
+                    BULLET_CARTRIDGE, PLAYER_BULLET_INTERVAL)
 
     # set enemies
-    enemies = [Enemy(ENEMY_IMG_PATH, ENEMY_SPEED) for _ in range(MAX_ENEMY)]
-    enemy_sys = EnemySystem(enemies, window, ENEMY_INTERVAL)
+    enemies = [Enemy(ENEMY_IMG_PATH, ENEMY_SPEED, window, ENEMY_BULLET_PATH, ENEMY_BULLET_SPEED, BULLET_CARTRIDGE,
+                     ENEMY_BULLET_INTERVAL) for _ in range(MAX_ENEMY)]
+    enemy_sys = EnemySystem(enemies, ENEMY_INTERVAL)
 
     # set bombs
     bombs = [Collision_Detector.Bomb(BOMB_IMG_PATHS, BOMB_INTERVAL, window)
              for _ in range(MAX_BOMB)]
-
-    # set player's shooting system
-    player_shoot = Shooting(bullets, PLAYER_BULLET_INTERVAL, player, window, SHOOT_KEY)
 
     # set the running loop
     running = True
@@ -51,17 +46,23 @@ def aircraft_battle():
         pressed_key = pygame.key.get_pressed()
         background.display()
         player.move(pressed_key)
-        player.display(window)
+        player.display()
+        player.manually_launch(pressed_key, pygame.K_SPACE)
         enemy_sys.start_system()
-        player_shoot.manually_launch(pressed_key)
         for enemy in enemies:
             if not enemy.isFree:
                 running = Collision_Detector.enemy_player(enemy, player)
                 if not running:
                     break
+                for bullet in enemy.shooting.bullets:
+                    running = Collision_Detector.bullet_player(bullet, player)
+                    if not running:
+                        break
+                if not running:
+                    break
                 # If you do not add these two lines,
                 # Player will check with the other Enemy and change the value of running again
-                for bullet in bullets:
+                for bullet in player.shooting.bullets:
                     if not bullet.isFree:
                         Collision_Detector.enemy_bullet(enemy, bullet, bombs)
         for bomb in bombs:

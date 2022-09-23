@@ -1,4 +1,4 @@
-from ShootingSystem import Enemy, Bullet, pygame, Player
+from Plane import Enemy, Bullet, pygame, Player
 from config import BOMB_SOUND_PATH, BOMB_VOLUME
 
 pygame.mixer.init()
@@ -47,5 +47,11 @@ def enemy_bullet(enemy: Enemy, bullet: Bullet, bombs: list[Bomb]):
 
 def enemy_player(enemy: Enemy, player: Player):
     if enemy.rect.colliderect(player.rect):
+        return False
+    return True
+
+
+def bullet_player(bullet: Bullet, player:Player):
+    if bullet.rect.colliderect(player.rect):
         return False
     return True
