@@ -33,3 +33,7 @@ class Shooting:
         self.bullets = [Bullet(bullet_path, bullet_speed) for _ in range(cartridge)]
         self.intervals = intervals
         self.cnt = 0
+
+    def clear(self):
+        for bullet in self.bullets:
+            bullet.isFree = True

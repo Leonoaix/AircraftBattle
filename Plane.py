@@ -106,7 +106,7 @@ class EnemySystem:
         for enemy in self.enemies:
             if enemy.isFree:
                 enemy.rect.x = random.randint(0, SCREEN_WIDTH - enemy.rect.width)
-                enemy.rect.y = 0
+                enemy.rect.y = ENEMY_STARTING
                 enemy.isFree = False
                 break
 
@@ -125,3 +125,9 @@ class EnemySystem:
                 bullet.move(enemy.window, False)
             enemy.moving()
         self.cnt += 1
+
+    def clear_sys(self):
+        for enemy in self.enemies:
+            enemy.isFree = True
+            for bullet in enemy.shooting.bullets:
+                bullet.isFree = True

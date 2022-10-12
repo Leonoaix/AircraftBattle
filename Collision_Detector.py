@@ -31,6 +31,10 @@ class Bomb:
         if not self.isFree:
             self.window.blit(self.images[self.index], (self.x, self.y))
 
+    def clear(self):
+        self.index = 0
+        self.isFree = True
+        self.cnt = 0
 
 def enemy_bullet(enemy: Enemy, bullet: Bullet, bombs: list[Bomb]):
     if enemy.rect.colliderect(bullet.rect):
@@ -43,15 +47,17 @@ def enemy_bullet(enemy: Enemy, bullet: Bullet, bombs: list[Bomb]):
                 bomb.isFree = False
                 bomb_sound.play()
                 break
+        return 1
+    return 0
 
 
 def enemy_player(enemy: Enemy, player: Player):
     if enemy.rect.colliderect(player.rect):
-        return False
-    return True
+        return True
+    return False
 
 
 def bullet_player(bullet: Bullet, player:Player):
     if bullet.rect.colliderect(player.rect):
-        return False
-    return True
+        return True
+    return False
